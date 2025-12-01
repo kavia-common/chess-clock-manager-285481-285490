@@ -4,6 +4,12 @@
 # - Adds traps to ensure child processes are terminated on container stop
 # - Uses exec to hand off PID 1 to the Python process for proper signal handling
 
+# Ensure we are actually using bash (not sh) to avoid syntax issues on some runtimes.
+if [ -z "${BASH_VERSION:-}" ]; then
+  echo "Error: This script must be run with bash. Current shell does not expose BASH_VERSION." >&2
+  exit 2
+fi
+
 set -euo pipefail
 
 # Resolve workspace; default to image path where files were copied

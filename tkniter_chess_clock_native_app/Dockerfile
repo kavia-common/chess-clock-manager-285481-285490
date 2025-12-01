@@ -38,4 +38,5 @@ ENV DISPLAY=:99
 # RUN python -m venv /app/.venv && . /app/.venv/bin/activate && pip install --no-cache-dir -U pip
 
 # Delegate startup to start.sh (which handles Xvfb and Python execution)
-ENTRYPOINT ["bash", "/app/start.sh"]
+# Use explicit /bin/bash path to avoid PATH resolution issues in minimal images.
+ENTRYPOINT ["/bin/bash", "/app/start.sh"]
