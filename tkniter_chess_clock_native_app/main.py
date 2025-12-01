@@ -221,6 +221,8 @@ def main() -> int:
     log(f"Python version: {sys.version.split()[0]}")
     # Environment hints
     log(f"Working directory: {os.getcwd()}")
+    log(f"__file__: {__file__}")
+    log(f"Absolute path to main.py: {os.path.abspath(__file__)}")
     app = ChessClockApp()
     try:
         app.mainloop()

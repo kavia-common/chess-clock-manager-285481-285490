@@ -11,8 +11,19 @@ This container hosts a native Tkinter application for a chess clock.
 
 ```bash
 cd chess-clock-manager-285481-285490/tkniter_chess_clock_native_app
+# Ensure executable permissions (in case your environment stripped them)
+chmod +x start.sh run.sh entrypoint.sh
+# Preferred
 bash start.sh
+# Fallbacks
+bash run.sh
+bash entrypoint.sh
 ```
+
+### Notes
+- Ensure files use Unix LF line endings.
+- The launcher prints an ls -la listing and absolute path to start.sh at startup to verify correct path resolution.
+- If running in a headless environment, the GUI may not display; logs confirm successful script execution and path correctness.
 
 You'll see logs like:
 

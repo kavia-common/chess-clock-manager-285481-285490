@@ -1,8 +1,30 @@
 {
-  "name": "Tkinter Chess Clock",
-  "type": "native",
-  "entry": "./start.sh",
-  "cwd": ".",
-  "env": {},
-  "notes": "This file is used by the preview system to know how to start the container. The start.sh script prepares a venv and runs the Tkinter app."
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Tkinter Chess Clock - start.sh",
+      "type": "shell",
+      "request": "launch",
+      "command": "bash -lc './start.sh'",
+      "cwd": "${workspaceFolder}/chess-clock-manager-285481-285490/tkniter_chess_clock_native_app",
+      "env": {
+        "PYTHON_BIN": "python3",
+        "VENV_DIR": ".venv"
+      }
+    },
+    {
+      "name": "Tkinter Chess Clock - fallback run.sh",
+      "type": "shell",
+      "request": "launch",
+      "command": "bash -lc './run.sh'",
+      "cwd": "${workspaceFolder}/chess-clock-manager-285481-285490/tkniter_chess_clock_native_app"
+    },
+    {
+      "name": "Tkinter Chess Clock - entrypoint.sh",
+      "type": "shell",
+      "request": "launch",
+      "command": "bash -lc './entrypoint.sh'",
+      "cwd": "${workspaceFolder}/chess-clock-manager-285481-285490/tkniter_chess_clock_native_app"
+    }
+  ]
 }
