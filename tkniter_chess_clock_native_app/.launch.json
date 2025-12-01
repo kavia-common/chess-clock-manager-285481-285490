@@ -1,0 +1,8 @@
+{
+  "name": "Tkinter Chess Clock",
+  "type": "native",
+  "entry": "start.sh",
+  "cwd": ".",
+  "env": {},
+  "notes": "This file is used by the preview system to know how to start the container. The start.sh script prepares a venv and runs the Tkinter app."
+}

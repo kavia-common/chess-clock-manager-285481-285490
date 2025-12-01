@@ -1,0 +1,3 @@
+# Tkinter typically ships with Python in standard distributions.
+# Add common optional dependencies used by Tk UI apps.
+pillow>=9.0.0
