@@ -17,8 +17,17 @@ import os
 import sys
 import time
 import threading
-import tkinter as tk
-from tkinter import ttk, messagebox
+
+# Import tkinter defensively to allow clearer error messaging in headless/missing-tk cases
+try:
+    import tkinter as tk
+    from tkinter import ttk, messagebox
+    TK_AVAILABLE = True
+except Exception as _tk_err:
+    tk = None  # type: ignore
+    ttk = None  # type: ignore
+    messagebox = None  # type: ignore
+    TK_AVAILABLE = False
 
 APP_NAME = "Tkinter Chess Clock"
 APP_VERSION = "0.1.0"
@@ -216,13 +225,38 @@ class ChessClockApp(tk.Tk):
 
 # PUBLIC_INTERFACE
 def main() -> int:
-    """Entrypoint for launching the Tkinter chess clock app."""
+    """Entrypoint for launching the Tkinter chess clock app.
+
+    Performs environment diagnostics:
+    - Logs Python version and executable
+    - Validates tkinter import and logs Tk version if available
+    - Detects headless environments (no DISPLAY) and exits gracefully after validation
+    """
     log(f"Starting {APP_NAME} v{APP_VERSION}")
     log(f"Python version: {sys.version.split()[0]}")
+    log(f"Python executable: {sys.executable}")
     # Environment hints
     log(f"Working directory: {os.getcwd()}")
     log(f"__file__: {__file__}")
     log(f"Absolute path to main.py: {os.path.abspath(__file__)}")
+
+    # Validate tkinter availability and provide clear diagnostics
+    if not TK_AVAILABLE:
+        log("ERROR: tkinter is not available. Ensure system Tk/Tkinter libraries are installed.")
+        # Exit with non-zero code to indicate missing runtime prerequisite
+        return 2
+
+    # Print Tk version for clarity
+    try:
+        log(f"tkinter import OK; TkVersion: {getattr(tk, 'TkVersion', 'unknown')}")
+    except Exception:
+        pass
+
+    # Headless environment handling: if no DISPLAY, we cannot show GUI
+    if os.name != "nt" and not os.environ.get("DISPLAY"):
+        log("Headless environment detected (DISPLAY not set). Tkinter validated; exiting gracefully without launching GUI.")
+        return 0
+
     app = ChessClockApp()
     try:
         app.mainloop()

@@ -23,7 +23,16 @@ bash entrypoint.sh
 ### Notes
 - Ensure files use Unix LF line endings.
 - The launcher prints an ls -la listing and absolute path to start.sh at startup to verify correct path resolution.
-- If running in a headless environment, the GUI may not display; logs confirm successful script execution and path correctness.
+- Tkinter auto-detection and installation:
+  - On startup, `start.sh` validates `import tkinter` and, if missing, attempts to install system packages based on the base image:
+    - Debian/Ubuntu: `apt-get install -y tk python3-tk`
+    - Alpine: `apk add --no-cache tcl tk python3-tkinter` (python3-tkinter may not exist on all variants)
+    - Fedora/RHEL: `dnf/yum install -y tk python3-tkinter`
+    - openSUSE: `zypper install tk python3-tk`
+  - After installation, it retries the import and logs success or failure.
+- Headless environments:
+  - If `DISPLAY` is not set (typical in CI), the app validates Tkinter import and then exits gracefully without attempting to create a GUI window.
+  - This ensures CI runs pass without a display server while still verifying dependencies.
 
 You'll see logs like:
 
