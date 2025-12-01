@@ -9,9 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1
 
 # Install system packages needed for Tkinter and headless X (Xvfb)
-# - python3-tk/tk provide Tk libraries
-# - xvfb enables headless X display at :99
-# - xauth, x11-apps are useful for validation and X utilities (small footprint)
+# Keep footprint minimal and clean apt lists
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         python3-tk \
@@ -39,7 +37,5 @@ ENV DISPLAY=:99
 # You can uncomment and add pip installs if/when dependencies are introduced.
 # RUN python -m venv /app/.venv && . /app/.venv/bin/activate && pip install --no-cache-dir -U pip
 
-# Start an X virtual framebuffer to support Tkinter in headless environments, then run the app.
-# Using a small wrapper command here to ensure Xvfb is up before starting the app.
-# Note: start.sh prefers ./.venv/bin/python if present, else uses system python3.
-ENTRYPOINT ["/bin/bash", "-lc", "Xvfb :99 -screen 0 1024x768x24 & exec /app/start.sh"]
+# Delegate startup to start.sh (which handles Xvfb and Python execution)
+ENTRYPOINT ["bash", "/app/start.sh"]
